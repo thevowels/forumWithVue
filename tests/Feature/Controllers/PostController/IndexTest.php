@@ -21,7 +21,5 @@ it('shoudl passes posts to the view ' ,function (){
     $posts = Post::factory(3)->create();
 
     get(route('posts.index'))
-        ->assertInertia( fn (AssertableInertia $inertia) => $inertia
-            ->hasPaginatedResource('posts', PostResource::collection($posts->reverse()))
-        );
+            ->assertHasPaginatedResource('posts', PostResource::collection($posts->reverse()));
 });
