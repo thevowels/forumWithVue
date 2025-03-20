@@ -9,3 +9,10 @@ it('can show a post', function () {
     get(route('posts.show', $post))
         ->assertComponent('Posts/Show', true);
 });
+
+it('passes a post to the view' , function () {
+    $post = Post::factory()->create();
+
+    get(route('posts.show', $post))
+        ->hasResource('post', PostREsource::make($post));
+});
