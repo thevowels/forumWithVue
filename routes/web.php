@@ -31,9 +31,13 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
+
 });
 
 Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
+
+Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
+
 
 Route::get('test', function () {
    return [
@@ -42,3 +46,4 @@ Route::get('test', function () {
        CommentResource::make(Comment::find(1))
    ];
 });
+
