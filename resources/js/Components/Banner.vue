@@ -12,7 +12,7 @@ watchEffect(async () => {
     message.value = page.props.jetstream.flash?.banner || '';
     show.value = true;
     clearTimeout(timeout.value);
-    timeoute.value = setTimeout(() => show.value = false, 5000);
+    timeout.value = setTimeout(() => show.value = false, 5000);
 });
 
 onMounted(() => clearTimeout(timeout.value));
