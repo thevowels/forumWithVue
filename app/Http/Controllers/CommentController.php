@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class CommentController extends Controller
 {
@@ -72,10 +73,12 @@ class CommentController extends Controller
      */
     public function destroy(Request $request, Comment $comment)
     {
-        //
-        if($request->user()->id !== $comment->user_id){
-            abort(403);
-        }
+        //Usage as model's can/cannot
+//        if($request->user()->cannot('delete', $comment)){
+//            abort(403);
+//        }
+        //usage as Gate
+        Gate::authorize('delete',  $comment);
         $comment->delete();
         return to_route('posts.show', $comment->post_id);
     }
