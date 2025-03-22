@@ -4,7 +4,13 @@ use App\Models\User;
 use App\Models\Post;
 use App\Models\Comment;
 use function Pest\Laravel\actingAs;
+use function Pest\Laravel\post;
 
+it('requies authentication', function() {
+    $post = Post::factory()->create();
+    post(route('posts.comments.store',$post ))
+        ->assertRedirect(route('login'));
+});
 
 it('can store a comment', function () {
     $user = User::factory()->create();
