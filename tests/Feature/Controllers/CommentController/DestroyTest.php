@@ -15,6 +15,12 @@ it('requires authentication', function () {
 it('redirects to post show page', function () {
     $comment = Comment::factory()->create();
     actingAs($comment->user)
+        ->delete(route('comments.destroy',['comment' => $comment,'page' => 2] ))
+        ->assertRedirect(route('posts.show', ['post' => $comment->post_id, 'page' => 2]));
+});
+it('redirects to post show page with correct comments page', function () {
+    $comment = Comment::factory()->create();
+    actingAs($comment->user)
         ->delete(route('comments.destroy',$comment ))
         ->assertRedirect(route('posts.show', $comment->post_id));
 });

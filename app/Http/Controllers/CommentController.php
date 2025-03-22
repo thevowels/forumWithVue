@@ -80,6 +80,6 @@ class CommentController extends Controller
         //usage as Gate
         Gate::authorize('delete',  $comment);
         $comment->delete();
-        return to_route('posts.show', $comment->post_id);
+        return to_route('posts.show', ['post' => $comment->post_id, 'page' => $request->query('page')]);
     }
 }
