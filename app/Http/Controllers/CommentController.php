@@ -10,29 +10,12 @@ use Illuminate\Support\Facades\Gate;
 class CommentController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request, Post $post)
     {
         //
-        ;
-
+        Gate::authorize('create', Comment::class);
         $comment = Comment::create([
             ...$request->validate(['body' => ['required', 'string', 'max:2500']]),
             'post_id'=>$post->id,
@@ -44,21 +27,6 @@ class CommentController extends Controller
 
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Comment $comment)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Comment $comment)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -66,6 +34,12 @@ class CommentController extends Controller
     public function update(Request $request, Comment $comment)
     {
         //
+        $validated = $request->validate([
+            'body' => ['required', 'string', 'max:2500', 'min:5'],
+        ]);
+        Gate::authorize('update', $comment);
+        $comment->update($validated);
+        return to_route('posts.show', ['post' => $comment->post_id, 'page' => $request->query('page')]);
     }
 
     /**

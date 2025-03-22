@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
+use App\Models\Comment;
+use App\Policies\CommentPolicy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -25,5 +28,7 @@ class AppServiceProvider extends ServiceProvider
         JsonResource::withoutWrapping();
         Model::preventLazyLoading();
         Model::unguard();
+
+        Gate::policy(Comment::class, CommentPolicy::class);
     }
 }
