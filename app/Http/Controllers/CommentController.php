@@ -23,7 +23,7 @@ class CommentController extends Controller
 
         ]);
 
-        return to_route('posts.show', $post)
+        return redirect($post->showRoute())
             ->banner('You have added a comment.');
 
 
@@ -41,7 +41,7 @@ class CommentController extends Controller
         ]);
         Gate::authorize('update', $comment);
         $comment->update($validated);
-        return to_route('posts.show', ['post' => $comment->post_id, 'page' => $request->query('page')])
+        return redirect($comment->post->showRoute(['page' => $request->query('page')]))
             ->banner('Your comment has been updated.');
     }
 
@@ -57,7 +57,7 @@ class CommentController extends Controller
         //usage as Gate
         Gate::authorize('delete',  $comment);
         $comment->delete();
-        return to_route('posts.show', ['post' => $comment->post_id, 'page' => $request->query('page')])
+        return redirect($comment->post->showRoute(['page' => $request->query('page')]))
             ->banner("You've successfully deleted your comment.");
 
     }

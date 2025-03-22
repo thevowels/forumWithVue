@@ -10,6 +10,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Str;
 
 
 class PostController extends Controller
@@ -54,15 +55,17 @@ class PostController extends Controller
             ...$validated,
             'user_id' => auth()->id(),
         ]);
-        return to_route('posts.show', $post);
+        return redirect($post->showRoute());
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Post $post)
+    public function show(Request $request, Post $post)
     {
-
+        if(! Str::contains($post->showRoute() , $request->path())) {
+            return redirect($post->showRoute($request->query()));
+        }
         $post->load('user');
         return inertia('Posts/Show',
             [

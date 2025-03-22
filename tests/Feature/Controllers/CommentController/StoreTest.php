@@ -33,7 +33,7 @@ it('redirects to a post showPage', function () {
 
     actingAs($user)->post(route('posts.comments.store', $post), [
         'body' => "Valid comment body",
-    ])->assertRedirect(route('posts.show', $post));
+    ])->assertRedirect($post->showRoute());
 });
 
 
