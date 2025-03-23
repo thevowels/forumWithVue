@@ -7,12 +7,22 @@ trait ConvertsMarkdownToHtml
 {
     protected static function bootConvertsMarkdownToHtml(){
         static::saving(function(self $model){
-            $model->fill(['html' => str($model->body)->markdown([
-                'html_input' => 'strip',
-                'allow_unsafe_links' => false,
-                'max_nesting_level' => 5,
-            ])]);
+            $markdownData = collect(self::getMarkdownToHtmlMap())
+                ->flip()
+                ->map(fn ($bodyColumn) =>  str($model->body)->markdown([
+                    'html_input' => 'strip',
+                    'allow_unsafe_links' => false,
+                    'max_nesting_level' => 5,
+                ]));
+            return $model->fill($markdownData->all());
+
         });
     }
 
+    protected static function getMarkdownToHtmlMap(): array
+    {
+        return[
+            'body' => 'html',
+        ];
+    }
 }
