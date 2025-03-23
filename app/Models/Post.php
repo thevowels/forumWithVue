@@ -14,6 +14,12 @@ class Post extends Model
     /** @use HasFactory<\Database\Factories\PostFactory> */
     use HasFactory;
 
+    protected static function booted(){
+        static::saving(function(self $post){
+            $post->fill(['html' => str($post->body)->markdown()]);
+        });
+    }
+
 
     public function user(): BelongsTo
     {
@@ -29,6 +35,7 @@ class Post extends Model
     {
         return Attribute::set(fn ($value) => Str::title($value));
     }
+
 
     public function showRoute(array $parameters = [])
     {

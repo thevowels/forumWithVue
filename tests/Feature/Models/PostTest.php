@@ -23,3 +23,12 @@ it('can generate a route with additional parameters', function(){
     expect($post->showRoute(['page'=>2]))->toBe(route('posts.show', [$post, Str::slug($post->title), 'page'=>2]));
 
 });
+
+it('generates the HTML' , function(){
+    $post = Post::factory()->make(['body' => '## Hello World']);
+
+    $post->save();
+
+    expect($post->html)->toEqual(str($post->body)->markdown());
+
+});
