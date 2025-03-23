@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\ConvertsMarkdownToHtml;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,16 +14,7 @@ class Post extends Model
 {
     /** @use HasFactory<\Database\Factories\PostFactory> */
     use HasFactory;
-
-    protected static function booted(){
-        static::saving(function(self $post){
-            $post->fill(['html' => str($post->body)->markdown([
-                'html_input' => 'strip',
-                'allow_unsafe_links' => false,
-                'max_nesting_level' => 5,
-            ])]);
-        });
-    }
+    use ConvertsMarkdownToHtml;
 
 
     public function user(): BelongsTo
