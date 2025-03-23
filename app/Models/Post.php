@@ -16,7 +16,11 @@ class Post extends Model
 
     protected static function booted(){
         static::saving(function(self $post){
-            $post->fill(['html' => str($post->body)->markdown()]);
+            $post->fill(['html' => str($post->body)->markdown([
+                'html_input' => 'strip',
+                'allow_unsafe_links' => false,
+                'max_nesting_level' => 5,
+            ])]);
         });
     }
 
